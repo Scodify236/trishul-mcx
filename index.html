@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commodity Rates Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Compact table styles */
+        .table > :not(caption) > * > * {
+            padding: 0.25rem 0.5rem;
+        }
+
+        .price-cell {
+            transition: background-color 1s ease;
+        }
+
+        .price-up {
+            animation: priceUp 1s ease;
+        }
+
+        .price-down {
+            animation: priceDown 1s ease;
+        }
+
+        @keyframes priceUp {
+            0% { background-color: rgba(25, 135, 84, 0.3); }
+            100% { background-color: transparent; }
+        }
+
+        @keyframes priceDown {
+            0% { background-color: rgba(220, 53, 69, 0.3); }
+            100% { background-color: transparent; }
+        }
+
+        /* Responsive font sizes */
+        @media (max-width: 768px) {
+            .table {
+                font-size: 0.8rem;
+            }
+            .card-header h5 {
+                font-size: 0.9rem;
+            }
+            .card-header small {
+                font-size: 0.7rem;
+            }
+        }
+
+        .seconds {
+            color: #ffffff80;
+        }
+        .bg-warning .seconds {
+            color: #00000080;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container-fluid py-2">
+        <div class="row g-2">
+            <!-- MCX Card -->
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
+                        <h5 class="mb-0">MCX</h5>
+                        <small>
+                            <span id="mcxUpdated"></span>
+                            <span id="mcxSeconds" class="seconds"></span>
+                        </small>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th class="text-end">Last Price</th>
+                                        <th class="text-end">Change</th>
+                                        <th class="text-end">Change %</th>
+                                        <th class="text-end">Exp Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mcxBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NCDEX Card -->
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-2">
+                        <h5 class="mb-0">NCDEX</h5>
+                        <small>
+                            <span id="ncdexUpdated"></span>
+                            <span id="ncdexSeconds" class="seconds"></span>
+                        </small>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th class="text-end">Last Price</th>
+                                        <th class="text-end">Change</th>
+                                        <th class="text-end">Change %</th>
+                                        <th class="text-end">Exp Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ncdexBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- International Card -->
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-2">
+                        <h5 class="mb-0">International</h5>
+                        <small>
+                            <span id="intlUpdated"></span>
+                            <span id="intlSeconds" class="seconds"></span>
+                        </small>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th class="text-end">Last Price</th>
+                                        <th class="text-end">Change</th>
+                                        <th class="text-end">Change %</th>
+                                        <th class="text-end">Exp Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="intlBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spot Rates Card -->
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-2">
+                        <h5 class="mb-0">Spot Rates</h5>
+                        <small>
+                            <span id="spotUpdated"></span>
+                            <span id="spotSeconds" class="seconds"></span>
+                        </small>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th class="text-end">Last Price</th>
+                                        <th class="text-end">Change</th>
+                                        <th class="text-end">Change %</th>
+                                        <th class="text-end">Exp Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="spotBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sections = ['MCX', 'NCDEX', 'INTERNATIONAL', 'SPOT'];
+        const previousPrices = new Map();
+        let startTime = new Date();
+        
+        function updateSeconds() {
+            const now = new Date();
+            const seconds = Math.floor((now - startTime) / 1000);
+            sections.forEach(section => {
+                const elementId = section === 'INTERNATIONAL' ? 'intlSeconds' : `${section.toLowerCase()}Seconds`;
+                document.getElementById(elementId).textContent = ` | ${seconds}s`;
+            });
+        }
+
+        function updateSection(section) {
+            fetch(`https://priceapi.moneycontrol.com/technicalCompanyData/commodity/getMajorCommodities?tabName=${section}&deviceType=W`)
+                .then(response => response.json())
+                .then(data => {
+                    const sectionLower = section.toLowerCase();
+                    const updatedElement = document.getElementById(
+                        section === 'INTERNATIONAL' ? 'intlUpdated' : `${sectionLower}Updated`
+                    );
+                    updatedElement.textContent = data.data.lastUpdated;
+                    startTime = new Date(); // Reset timer on successful update
+
+                    const tbody = document.getElementById(
+                        section === 'INTERNATIONAL' ? 'intlBody' : `${sectionLower}Body`
+                    );
+                    tbody.innerHTML = '';
+                    
+                    data.data.list.forEach(item => {
+                        const row = document.createElement('tr');
+                        const isPositive = parseFloat(item.priceChange) >= 0;
+                        const changeClass = isPositive ? 'text-success' : 'text-danger';
+                        
+                        const previousPrice = previousPrices.get(`${section}-${item.symbol}`);
+                        let priceChangeClass = '';
+                        if (previousPrice) {
+                            const currentPrice = parseFloat(item.lastPrice);
+                            if (currentPrice > previousPrice) {
+                                priceChangeClass = 'price-up';
+                            } else if (currentPrice < previousPrice) {
+                                priceChangeClass = 'price-down';
+                            }
+                        }
+                        previousPrices.set(`${section}-${item.symbol}`, parseFloat(item.lastPrice));
+
+                        row.innerHTML = `
+                            <td>${item.symbol}</td>
+                            <td class="text-end price-cell ${priceChangeClass}">${item.lastPrice}</td>
+                            <td class="text-end ${changeClass}">${item.priceChange}</td>
+                            <td class="text-end ${changeClass}">${item.priceChangePercentage}%</td>
+                            <td class="text-end">${item.expDate}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error(`Error fetching ${section} rates:`, error));
+        }
+
+        function updateAllSections() {
+            sections.forEach(section => updateSection(section));
+        }
+
+        // Initial update
+        updateAllSections();
+
+        // Set up auto-refresh every 1 second
+        setInterval(updateAllSections, 1000);
+
+        // Update seconds counter every 100ms for smooth display
+        setInterval(updateSeconds, 100);
+    </script>
+</body>
+</html>
