@@ -3,16 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commodity Rates Dashboard</title>
+    <title>Trishul-MCX Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Compact table styles */
+        :root {
+            --primary-dark: #1a237e;
+            --secondary-dark: #0d47a1;
+            --success-dark: #1b5e20;
+            --info-dark: #01579b;
+            --warning-dark: #f57f17;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            color: white;
+            padding: 0.75rem 0;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .dashboard-time {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-bottom: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            border-radius: 0.5rem 0.5rem 0 0 !important;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
         .table > :not(caption) > * > * {
-            padding: 0.25rem 0.5rem;
+            padding: 0.5rem;
+        }
+
+        .table > thead {
+            background-color: rgba(0, 0, 0, 0.02);
         }
 
         .price-cell {
-            transition: background-color 1s ease;
+            transition: background-color 0.5s ease;
+            font-weight: 500;
         }
 
         .price-up {
@@ -24,43 +81,150 @@
         }
 
         @keyframes priceUp {
-            0% { background-color: rgba(25, 135, 84, 0.3); }
+            0% { background-color: rgba(25, 135, 84, 0.15); }
             100% { background-color: transparent; }
         }
 
         @keyframes priceDown {
-            0% { background-color: rgba(220, 53, 69, 0.3); }
+            0% { background-color: rgba(220, 53, 69, 0.15); }
             100% { background-color: transparent; }
         }
 
-        /* Responsive font sizes */
-        @media (max-width: 768px) {
-            .table {
-                font-size: 0.8rem;
-            }
-            .card-header h5 {
-                font-size: 0.9rem;
-            }
-            .card-header small {
-                font-size: 0.7rem;
-            }
+        .text-success {
+            color: #198754 !important;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+        }
+
+        .time-display {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            display: inline-block;
         }
 
         .seconds {
-            color: #ffffff80;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: monospace;
+            font-size: 0.9em;
         }
+
         .bg-warning .seconds {
-            color: #00000080;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container-fluid {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+
+            .dashboard-title {
+                font-size: 1.25rem;
+            }
+
+            .dashboard-time {
+                font-size: 0.9rem;
+            }
+
+            .card-header h5 {
+                font-size: 0.9rem;
+            }
+
+            .table {
+                font-size: 0.75rem;
+            }
+
+            .table > :not(caption) > * > * {
+                padding: 0.35rem 0.25rem;
+            }
+
+            .time-display {
+                padding: 0.15rem 0.35rem;
+                font-size: 0.8rem;
+            }
+
+            .seconds {
+                font-size: 0.8em;
+            }
+
+            /* Adjust column widths for mobile */
+            .table th:nth-child(1),
+            .table td:nth-child(1) {
+                width: 25%;
+                min-width: 70px;
+            }
+
+            .table th:nth-child(2),
+            .table td:nth-child(2) {
+                width: 20%;
+                min-width: 60px;
+            }
+
+            .table th:nth-child(3),
+            .table td:nth-child(3) {
+                width: 15%;
+                min-width: 50px;
+            }
+
+            .table th:nth-child(4),
+            .table td:nth-child(4) {
+                width: 15%;
+                min-width: 50px;
+            }
+
+            .table th:nth-child(5),
+            .table td:nth-child(5) {
+                width: 25%;
+                min-width: 70px;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 576px) {
+            .card {
+                margin-bottom: 0.5rem;
+            }
+
+            .card-header {
+                padding: 0.35rem 0.5rem;
+            }
+
+            .table {
+                font-size: 0.7rem;
+            }
+
+            .table > :not(caption) > * > * {
+                padding: 0.25rem 0.15rem;
+            }
         }
     </style>
 </head>
-<body class="bg-light">
-    <div class="container-fluid py-2">
+<body>
+    <!-- Rest of the HTML remains the same -->
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="dashboard-title">Trishul-MCX</h1>
+                <div class="dashboard-time">
+                    <div class="time-display">
+                        <span id="currentTime"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid">
         <div class="row g-2">
             <!-- MCX Card -->
             <div class="col-12">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
+                <div class="card">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">MCX</h5>
                         <small>
                             <span id="mcxUpdated"></span>
@@ -69,14 +233,14 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Symbol</th>
-                                        <th class="text-end">Last Price</th>
-                                        <th class="text-end">Change</th>
-                                        <th class="text-end">Change %</th>
-                                        <th class="text-end">Exp Date</th>
+                                        <th class="text-end">Last</th>
+                                        <th class="text-end">Chg</th>
+                                        <th class="text-end">Chg%</th>
+                                        <th class="text-end">Exp</th>
                                     </tr>
                                 </thead>
                                 <tbody id="mcxBody"></tbody>
@@ -88,8 +252,8 @@
 
             <!-- NCDEX Card -->
             <div class="col-12">
-                <div class="card shadow">
-                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-2">
+                <div class="card">
+                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">NCDEX</h5>
                         <small>
                             <span id="ncdexUpdated"></span>
@@ -98,14 +262,14 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Symbol</th>
-                                        <th class="text-end">Last Price</th>
-                                        <th class="text-end">Change</th>
-                                        <th class="text-end">Change %</th>
-                                        <th class="text-end">Exp Date</th>
+                                        <th class="text-end">Last</th>
+                                        <th class="text-end">Chg</th>
+                                        <th class="text-end">Chg%</th>
+                                        <th class="text-end">Exp</th>
                                     </tr>
                                 </thead>
                                 <tbody id="ncdexBody"></tbody>
@@ -117,8 +281,8 @@
 
             <!-- International Card -->
             <div class="col-12">
-                <div class="card shadow">
-                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center py-2">
+                <div class="card">
+                    <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">International</h5>
                         <small>
                             <span id="intlUpdated"></span>
@@ -127,14 +291,14 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Symbol</th>
-                                        <th class="text-end">Last Price</th>
-                                        <th class="text-end">Change</th>
-                                        <th class="text-end">Change %</th>
-                                        <th class="text-end">Exp Date</th>
+                                        <th class="text-end">Last</th>
+                                        <th class="text-end">Chg</th>
+                                        <th class="text-end">Chg%</th>
+                                        <th class="text-end">Exp</th>
                                     </tr>
                                 </thead>
                                 <tbody id="intlBody"></tbody>
@@ -146,8 +310,8 @@
 
             <!-- Spot Rates Card -->
             <div class="col-12">
-                <div class="card shadow">
-                    <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-2">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Spot Rates</h5>
                         <small>
                             <span id="spotUpdated"></span>
@@ -156,14 +320,14 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Symbol</th>
-                                        <th class="text-end">Last Price</th>
-                                        <th class="text-end">Change</th>
-                                        <th class="text-end">Change %</th>
-                                        <th class="text-end">Exp Date</th>
+                                        <th class="text-end">Last</th>
+                                        <th class="text-end">Chg</th>
+                                        <th class="text-end">Chg%</th>
+                                        <th class="text-end">Exp</th>
                                     </tr>
                                 </thead>
                                 <tbody id="spotBody"></tbody>
@@ -177,10 +341,22 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
+        // JavaScript remains the same
         const sections = ['MCX', 'NCDEX', 'INTERNATIONAL', 'SPOT'];
         const previousPrices = new Map();
         let startTime = new Date();
         
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
         function updateSeconds() {
             const now = new Date();
             const seconds = Math.floor((now - startTime) / 1000);
@@ -199,7 +375,7 @@
                         section === 'INTERNATIONAL' ? 'intlUpdated' : `${sectionLower}Updated`
                     );
                     updatedElement.textContent = data.data.lastUpdated;
-                    startTime = new Date(); // Reset timer on successful update
+                    startTime = new Date();
 
                     const tbody = document.getElementById(
                         section === 'INTERNATIONAL' ? 'intlBody' : `${sectionLower}Body`
@@ -240,13 +416,13 @@
             sections.forEach(section => updateSection(section));
         }
 
-        // Initial update
+        // Initial updates
+        updateCurrentTime();
         updateAllSections();
 
-        // Set up auto-refresh every 1 second
+        // Set up auto-refresh intervals
+        setInterval(updateCurrentTime, 1000);
         setInterval(updateAllSections, 1000);
-
-        // Update seconds counter every 100ms for smooth display
         setInterval(updateSeconds, 100);
     </script>
 </body>
