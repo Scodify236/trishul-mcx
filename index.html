@@ -7,30 +7,74 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-dark: #1a237e;
-            --secondary-dark: #0d47a1;
-            --success-dark: #1b5e20;
-            --info-dark: #01579b;
-            --warning-dark: #f57f17;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --hover-bg: rgba(255, 255, 255, 0.05);
+            
+            --primary-dark: #2196f3;
+            --secondary-dark: #3f51b5;
+            --success-dark: #4caf50;
+            --info-dark: #00bcd4;
+            --warning-dark: #ffc107;
+        }
+        .table thead th {
+            color: var(--text-primary) !important;
+        }
+
+        /* Style for symbol column */
+        .table td:first-child strong {
+            color: var(--text-primary) !important;
+        }
+
+        /* Style for last price column */
+        .price-cell {
+            color: var(--text-primary) !important;
+        }
+
+        /* Style for expiry column */
+        .table td:last-child {
+            color: var(--text-primary) !important;
+        }
+
+        /* Headers in all card sections */
+        .card-header h5 {
+            color: var(--text-primary) !important;
+        }
+
+        /* Preserve other colors */
+        .text-success, .text-danger {
+            color: inherit !important;
         }
 
         body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
         }
 
         .dashboard-header {
-            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
-            color: white;
-            padding: 0.75rem 0;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         .dashboard-title {
             font-size: 2rem;
-            font-weight: 600;
+            font-weight: 700;
             margin: 0;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .dashboard-time {
@@ -39,91 +83,145 @@
         }
 
         .card {
-            border: none;
-            border-radius: 0.5rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            margin-bottom: 1rem;
-            transition: transform 0.2s;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
 
         .card-header {
-            border-radius: 0.5rem 0.5rem 0 0 !important;
-            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.25rem;
+            background: transparent;
+        }
+
+        .bg-primary {
+            background: linear-gradient(135deg, var(--primary-dark), #1565c0) !important;
+        }
+
+        .bg-secondary {
+            background: linear-gradient(135deg, var(--secondary-dark), #283593) !important;
+        }
+
+        .bg-success {
+            background: linear-gradient(135deg, var(--success-dark), #2e7d32) !important;
+        }
+
+        .bg-info {
+            background: linear-gradient(135deg, var(--info-dark), #0097a7) !important;
+        }
+
+        .bg-warning {
+            background: linear-gradient(135deg, var(--warning-dark), #ffa000) !important;
+            color: var(--text-primary) !important; /* Force white text */
         }
 
         .table {
+            color: var(--text-primary);
             margin-bottom: 0;
         }
 
         .table > :not(caption) > * > * {
-            padding: 0.5rem;
+            padding: 1rem;
+            background: transparent;
+            border-bottom-color: var(--border-color);
         }
 
         .table > thead {
-            background-color: rgba(0, 0, 0, 0.02);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .table > tbody > tr:hover {
+            background-color: var(--hover-bg);
         }
 
         .price-cell {
-            transition: background-color 0.5s ease;
-            font-weight: 500;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .price-up {
-            animation: priceUp 1s ease;
+            animation: priceUp 1.5s ease;
         }
 
         .price-down {
-            animation: priceDown 1s ease;
+            animation: priceDown 1.5s ease;
         }
 
         @keyframes priceUp {
-            0% { background-color: rgba(25, 135, 84, 0.15); }
+            0% { background-color: rgba(76, 175, 80, 0.3); }
             100% { background-color: transparent; }
         }
 
         @keyframes priceDown {
-            0% { background-color: rgba(220, 53, 69, 0.15); }
+            0% { background-color: rgba(244, 67, 54, 0.3); }
             100% { background-color: transparent; }
         }
 
         .text-success {
-            color: #198754 !important;
+            color: #69f0ae !important;
         }
 
         .text-danger {
-            color: #dc3545 !important;
+            color: #ff5252 !important;
         }
 
         .time-display {
             background: rgba(255, 255, 255, 0.1);
-            padding: 0.25rem 0.5rem;
-            border-radius: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
             display: inline-block;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .seconds {
             color: rgba(255, 255, 255, 0.8);
-            font-family: monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.9em;
         }
 
         .bg-warning .seconds {
-            color: rgba(0, 0, 0, 0.6);
+            color: rgba(255, 255, 255, 0.8) !important; /* Override previous dark color */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .container-fluid {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
             }
 
             .dashboard-title {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
             }
 
             .dashboard-time {
@@ -131,7 +229,26 @@
             }
 
             .card-header h5 {
-                font-size: 0.9rem;
+                font-size: 1rem;
+            }
+
+            .table {
+                font-size: 0.875rem;
+            }
+
+            .table > :not(caption) > * > * {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card {
+                margin-bottom: 1rem;
+                border-radius: 0.75rem;
+            }
+
+            .card-header {
+                padding: 0.75rem 1rem;
             }
 
             .table {
@@ -139,73 +256,48 @@
             }
 
             .table > :not(caption) > * > * {
-                padding: 0.35rem 0.25rem;
+                padding: 0.5rem 0.25rem;
             }
 
             .time-display {
-                padding: 0.15rem 0.35rem;
-                font-size: 0.8rem;
-            }
-
-            .seconds {
-                font-size: 0.8em;
-            }
-
-            /* Adjust column widths for mobile */
-            .table th:nth-child(1),
-            .table td:nth-child(1) {
-                width: 25%;
-                min-width: 70px;
-            }
-
-            .table th:nth-child(2),
-            .table td:nth-child(2) {
-                width: 20%;
-                min-width: 60px;
-            }
-
-            .table th:nth-child(3),
-            .table td:nth-child(3) {
-                width: 15%;
-                min-width: 50px;
-            }
-
-            .table th:nth-child(4),
-            .table td:nth-child(4) {
-                width: 15%;
-                min-width: 50px;
-            }
-
-            .table th:nth-child(5),
-            .table td:nth-child(5) {
-                width: 25%;
-                min-width: 70px;
+                padding: 0.35rem 0.75rem;
             }
         }
 
-        /* Extra small devices */
-        @media (max-width: 576px) {
-            .card {
-                margin-bottom: 0.5rem;
-            }
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
 
-            .card-header {
-                padding: 0.35rem 0.5rem;
-            }
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid var(--primary-dark);
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            animation: rotation 1s linear infinite;
+        }
 
-            .table {
-                font-size: 0.7rem;
-            }
-
-            .table > :not(caption) > * > * {
-                padding: 0.25rem 0.15rem;
-            }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Rest of the HTML remains the same -->
-    <!-- Dashboard Header -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
     <header class="dashboard-header">
         <div class="container-fluid">
             <div class="d-flex justify-content-between align-items-center">
@@ -220,7 +312,7 @@
     </header>
 
     <div class="container-fluid">
-        <div class="row g-2">
+        <div class="row g-3">
             <!-- MCX Card -->
             <div class="col-12">
                 <div class="card">
@@ -244,6 +336,35 @@
                                     </tr>
                                 </thead>
                                 <tbody id="mcxBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extras Card -->
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Extras</h5>
+                        <small>
+                            <span id="extrasUpdated"></span>
+                            <span id="extrasSeconds" class="seconds"></span>
+                        </small>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Symbol</th>
+                                        <th class="text-end">Last</th>
+                                        <th class="text-end">Chg</th>
+                                        <th class="text-end">Chg%</th>
+                                        <th class="text-end">Exp</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="extrasBody"></tbody>
                             </table>
                         </div>
                     </div>
@@ -338,14 +459,35 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
-        // JavaScript remains the same
         const sections = ['MCX', 'NCDEX', 'INTERNATIONAL', 'SPOT'];
         const previousPrices = new Map();
         let startTime = new Date();
-        
+        let fetchErrors = 0;
+        const maxRetries = 3;
+
+        // Show/hide loading overlay
+        function toggleLoading(show) {
+            const loader = document.getElementById('loadingOverlay');
+            if (show) {
+                loader.style.display = 'flex';
+            } else {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    loader.style.opacity = '1';
+                }, 500);
+            }
+        }
+
+        function formatNumber(number, decimals = 2) {
+            return parseFloat(number).toLocaleString('en-US', {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            });
+        }
+
         function updateCurrentTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('en-US', {
@@ -362,68 +504,195 @@
             const seconds = Math.floor((now - startTime) / 1000);
             sections.forEach(section => {
                 const elementId = section === 'INTERNATIONAL' ? 'intlSeconds' : `${section.toLowerCase()}Seconds`;
-                document.getElementById(elementId).textContent = ` | ${seconds}s`;
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.textContent = ` | ${seconds}s`;
+                    // Add warning class if data is stale
+                    if (seconds > 30) {
+                        element.style.color = '#ffc107';
+                    } else {
+                        element.style.color = '';
+                    }
+                }
             });
+            // Update extras seconds
+            const extrasElement = document.getElementById('extrasSeconds');
+            if (extrasElement) {
+                extrasElement.textContent = ` | ${seconds}s`;
+                if (seconds > 30) {
+                    extrasElement.style.color = '#ffc107';
+                } else {
+                    extrasElement.style.color = '';
+                }
+            }
         }
 
-        function updateSection(section) {
-            fetch(`https://priceapi.moneycontrol.com/technicalCompanyData/commodity/getMajorCommodities?tabName=${section}&deviceType=W`)
-                .then(response => response.json())
-                .then(data => {
-                    const sectionLower = section.toLowerCase();
-                    const updatedElement = document.getElementById(
-                        section === 'INTERNATIONAL' ? 'intlUpdated' : `${sectionLower}Updated`
-                    );
-                    updatedElement.textContent = data.data.lastUpdated;
-                    startTime = new Date();
+        async function fetchWithRetry(url, retries = maxRetries) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                fetchErrors = 0; // Reset error counter on successful fetch
+                return await response.json();
+            } catch (error) {
+                if (retries > 0) {
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retrying
+                    return fetchWithRetry(url, retries - 1);
+                }
+                fetchErrors++;
+                throw error;
+            }
+        }
 
-                    const tbody = document.getElementById(
-                        section === 'INTERNATIONAL' ? 'intlBody' : `${sectionLower}Body`
-                    );
-                    tbody.innerHTML = '';
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger m-3';
+            errorDiv.textContent = message;
+            document.querySelector('.container-fluid').prepend(errorDiv);
+            setTimeout(() => errorDiv.remove(), 5000);
+        }
+
+        async function updateSection(section) {
+            try {
+                const data = await fetchWithRetry(`https://priceapi.moneycontrol.com/technicalCompanyData/commodity/getMajorCommodities?tabName=${section}&deviceType=W`);
+                const sectionLower = section.toLowerCase();
+                const updatedElement = document.getElementById(
+                    section === 'INTERNATIONAL' ? 'intlUpdated' : `${sectionLower}Updated`
+                );
+                updatedElement.textContent = data.data.lastUpdated;
+                startTime = new Date();
+
+                const tbody = document.getElementById(
+                    section === 'INTERNATIONAL' ? 'intlBody' : `${sectionLower}Body`
+                );
+                tbody.innerHTML = '';
+                
+                data.data.list.forEach(item => {
+                    const row = document.createElement('tr');
+                    const isPositive = parseFloat(item.priceChange) >= 0;
+                    const changeClass = isPositive ? 'text-success' : 'text-danger';
+                    const changeIcon = isPositive ? '▲' : '▼';
                     
-                    data.data.list.forEach(item => {
-                        const row = document.createElement('tr');
-                        const isPositive = parseFloat(item.priceChange) >= 0;
-                        const changeClass = isPositive ? 'text-success' : 'text-danger';
-                        
-                        const previousPrice = previousPrices.get(`${section}-${item.symbol}`);
-                        let priceChangeClass = '';
-                        if (previousPrice) {
-                            const currentPrice = parseFloat(item.lastPrice);
-                            if (currentPrice > previousPrice) {
-                                priceChangeClass = 'price-up';
-                            } else if (currentPrice < previousPrice) {
-                                priceChangeClass = 'price-down';
-                            }
+                    const previousPrice = previousPrices.get(`${section}-${item.symbol}`);
+                    let priceChangeClass = '';
+                    if (previousPrice) {
+                        const currentPrice = parseFloat(item.lastPrice);
+                        if (currentPrice > previousPrice) {
+                            priceChangeClass = 'price-up';
+                        } else if (currentPrice < previousPrice) {
+                            priceChangeClass = 'price-down';
                         }
-                        previousPrices.set(`${section}-${item.symbol}`, parseFloat(item.lastPrice));
+                    }
+                    previousPrices.set(`${section}-${item.symbol}`, parseFloat(item.lastPrice));
 
-                        row.innerHTML = `
-                            <td>${item.symbol}</td>
-                            <td class="text-end price-cell ${priceChangeClass}">${item.lastPrice}</td>
-                            <td class="text-end ${changeClass}">${item.priceChange}</td>
-                            <td class="text-end ${changeClass}">${item.priceChangePercentage}%</td>
-                            <td class="text-end">${item.expDate}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                })
-                .catch(error => console.error(`Error fetching ${section} rates:`, error));
+                    row.innerHTML = `
+                        <td><strong>${item.symbol}</strong></td>
+                        <td class="text-end price-cell ${priceChangeClass}">${formatNumber(item.lastPrice)}</td>
+                        <td class="text-end ${changeClass}">${changeIcon} ${formatNumber(item.priceChange)}</td>
+                        <td class="text-end ${changeClass}">${formatNumber(item.priceChangePercentage)}%</td>
+                        <td class="text-end">${item.expDate}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error(`Error fetching ${section} rates:`, error);
+                if (fetchErrors >= maxRetries) {
+                    showError(`Failed to fetch ${section} data. Please check your connection.`);
+                }
+            }
         }
 
-        function updateAllSections() {
-            sections.forEach(section => updateSection(section));
+        async function updateExtras() {
+            try {
+                const [silvermicData, silvermData] = await Promise.all([
+                    fetchWithRetry('https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVERMIC?expiry=2024-11-29'),
+                    fetchWithRetry('https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVERM?expiry=2024-11-29')
+                ]);
+
+                const now = new Date();
+                document.getElementById('extrasUpdated').textContent = silvermicData.data.lastupdTime || now.toLocaleTimeString();
+                startTime = now;
+
+                const tbody = document.getElementById('extrasBody');
+                tbody.innerHTML = '';
+
+                // Function to create row for either SILVERMIC or SILVERM
+                const createRow = (data, symbol) => {
+                    const row = document.createElement('tr');
+                    const openPrice = parseFloat(data.data.openPrice); // Using openRate instead of lastPrice
+                    const priceChange = parseFloat(data.data.change);
+                    const isPositive = priceChange >= 0;
+                    const changeClass = isPositive ? 'text-success' : 'text-danger';
+                    const changeIcon = isPositive ? '▲' : '▼';
+
+                    const previousPrice = previousPrices.get(`EXTRAS-${symbol}`);
+                    let priceChangeClass = '';
+                    if (previousPrice) {
+                        const currentPrice = openPrice; // Compare with openRate
+                        if (currentPrice > previousPrice) {
+                            priceChangeClass = 'price-up';
+                        } else if (currentPrice < previousPrice) {
+                            priceChangeClass = 'price-down';
+                        }
+                    }
+                    previousPrices.set(`EXTRAS-${symbol}`, openPrice); // Store openRate
+
+                    row.innerHTML = `
+                        <td><strong>${symbol}</strong></td>
+                        <td class="text-end price-cell ${priceChangeClass}">${formatNumber(openPrice)}</td>
+                        <td class="text-end ${changeClass}">${changeIcon} ${formatNumber(data.data.change)}</td>
+                        <td class="text-end ${changeClass}">${formatNumber(data.data.perChange)}%</td>
+                        <td class="text-end">${data.data.EXPIRY}</td>
+                    `;
+                    return row;
+                };
+
+                // Add SILVERMIC row
+                tbody.appendChild(createRow(silvermicData, 'SILVERMIC'));
+                
+                // Add SILVERM row
+                tbody.appendChild(createRow(silvermData, 'SILVERM'));
+            } catch (error) {
+                console.error('Error fetching Extras data:', error);
+                if (fetchErrors >= maxRetries) {
+                    showError('Failed to fetch Extras data. Please check your connection.');
+                }
+            }
         }
 
-        // Initial updates
-        updateCurrentTime();
-        updateAllSections();
+        async function updateAllSections() {
+            await Promise.all([
+                ...sections.map(section => updateSection(section)),
+                updateExtras()
+            ]);
+            toggleLoading(false);
+        }
 
-        // Set up auto-refresh intervals
-        setInterval(updateCurrentTime, 1000);
-        setInterval(updateAllSections, 1000);
-        setInterval(updateSeconds, 100);
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleLoading(true);
+            updateCurrentTime();
+            updateAllSections();
+
+            // Set up auto-refresh intervals
+            setInterval(updateCurrentTime, 1000);
+            setInterval(updateAllSections, 2000);
+            setInterval(updateSeconds, 100);
+        });
+
+        // Handle visibility change to pause/resume updates when tab is inactive
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Clear all intervals when tab is hidden
+                for (let i = 1; i < 9999; i++) window.clearInterval(i);
+            } else {
+                // Restart intervals when tab becomes visible
+                updateCurrentTime();
+                updateAllSections();
+                setInterval(updateCurrentTime, 1000);
+                setInterval(updateAllSections, 2000);
+                setInterval(updateSeconds, 100);
+            }
+        });
     </script>
 </body>
 </html>
