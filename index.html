@@ -604,8 +604,8 @@
         async function updateExtras() {
             try {
                 const [silvermicData, silvermData] = await Promise.all([
-                    fetchWithRetry('https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVERMIC?expiry=2024-11-29'),
-                    fetchWithRetry('https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVERM?expiry=2024-11-29')
+                    fetchWithRetry('https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVERMIC?expiry=2025-02-28'),
+                    fetchWithRetry('https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVERM?expiry=2025-02-28')
                 ]);
 
                 const now = new Date();
