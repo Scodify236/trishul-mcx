@@ -5,62 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trishul-MCX Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
         :root {
-            --dark-bg: #121212;
-            --card-bg: #1e1e1e;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --border-color: rgba(255, 255, 255, 0.1);
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
             --hover-bg: rgba(255, 255, 255, 0.05);
             
-            --primary-dark: #2196f3;
-            --secondary-dark: #3f51b5;
-            --success-dark: #4caf50;
-            --info-dark: #00bcd4;
-            --warning-dark: #ffc107;
-        }
-        .table thead th {
-            color: var(--text-primary) !important;
-        }
-
-        /* Style for symbol column */
-        .table td:first-child strong {
-            color: var(--text-primary) !important;
-        }
-
-        /* Style for last price column */
-        .price-cell {
-            color: var(--text-primary) !important;
-        }
-
-        /* Style for expiry column */
-        .table td:last-child {
-            color: var(--text-primary) !important;
-        }
-
-        /* Headers in all card sections */
-        .card-header h5 {
-            color: var(--text-primary) !important;
-        }
-
-        /* Preserve other colors */
-        .text-success, .text-danger {
-            color: inherit !important;
+            --primary-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            --secondary-gradient: linear-gradient(135deg, #6366f1, #4338ca);
+            --success-gradient: linear-gradient(135deg, #22c55e, #15803d);
+            --info-gradient: linear-gradient(135deg, #06b6d4, #0369a1);
+            --warning-gradient: linear-gradient(135deg, #f59e0b, #b45309);
         }
 
         body {
             background-color: var(--dark-bg);
             color: var(--text-primary);
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
+            padding-bottom: 2rem;
         }
 
         .dashboard-header {
-            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            background: var(--primary-gradient);
             padding: 1rem 0;
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -68,18 +42,11 @@
         }
 
         .dashboard-title {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 700;
             margin: 0;
-            background: linear-gradient(45deg, #fff, #e3f2fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .dashboard-time {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .card {
@@ -87,56 +54,61 @@
             border: 1px solid var(--border-color);
             border-radius: 1rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
             overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
         }
 
         .card-header {
             border-bottom: 1px solid var(--border-color);
-            padding: 1rem 1.25rem;
+            padding: 1rem;
             background: transparent;
-        }
-
-        .bg-primary {
-            background: linear-gradient(135deg, var(--primary-dark), #1565c0) !important;
-        }
-
-        .bg-secondary {
-            background: linear-gradient(135deg, var(--secondary-dark), #283593) !important;
-        }
-
-        .bg-success {
-            background: linear-gradient(135deg, var(--success-dark), #2e7d32) !important;
-        }
-
-        .bg-info {
-            background: linear-gradient(135deg, var(--info-dark), #0097a7) !important;
-        }
-
-        .bg-warning {
-            background: linear-gradient(135deg, var(--warning-dark), #ffa000) !important;
-            color: var(--text-primary) !important; /* Force white text */
         }
 
         .table {
             color: var(--text-primary);
             margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 576px) {
+            .table {
+                font-size: 0.75rem;
+            }
+            
+            .table td, .table th {
+                padding: 0.5rem 0.25rem;
+            }
+
+            .price-cell {
+                font-size: 0.8rem;
+            }
+            
+            .card-header h5 {
+                font-size: 1rem;
+            }
+
+            .seconds {
+                font-size: 0.7rem;
+            }
         }
 
         .table > :not(caption) > * > * {
-            padding: 1rem;
+            padding: 0.75rem 0.5rem;
             background: transparent;
             border-bottom-color: var(--border-color);
         }
 
         .table > thead {
             background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .table > tbody > tr {
+            transition: background-color 0.2s ease;
         }
 
         .table > tbody > tr:hover {
@@ -146,125 +118,40 @@
         .price-cell {
             font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
-            transition: all 0.3s ease;
         }
 
         .price-up {
-            animation: priceUp 1.5s ease;
+            animation: priceUp 1s ease;
         }
 
         .price-down {
-            animation: priceDown 1.5s ease;
+            animation: priceDown 1s ease;
         }
 
         @keyframes priceUp {
-            0% { background-color: rgba(76, 175, 80, 0.3); }
+            0% { background-color: rgba(34, 197, 94, 0.2); }
             100% { background-color: transparent; }
         }
 
         @keyframes priceDown {
-            0% { background-color: rgba(244, 67, 54, 0.3); }
+            0% { background-color: rgba(239, 68, 68, 0.2); }
             100% { background-color: transparent; }
         }
 
-        .text-success {
-            color: #69f0ae !important;
-        }
-
-        .text-danger {
-            color: #ff5252 !important;
-        }
+        .text-success { color: #4ade80 !important; }
+        .text-danger { color: #f87171 !important; }
 
         .time-display {
             background: rgba(255, 255, 255, 0.1);
             padding: 0.5rem 1rem;
             border-radius: 2rem;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             backdrop-filter: blur(4px);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .seconds {
-            color: rgba(255, 255, 255, 0.8);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9em;
-        }
-
-        .bg-warning .seconds {
-            color: rgba(255, 255, 255, 0.8) !important; /* Override previous dark color */
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--dark-bg);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Mobile Responsive Styles */
-        @media (max-width: 768px) {
-            .container-fluid {
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
-            }
-
-            .dashboard-title {
-                font-size: 1.5rem;
-            }
-
-            .dashboard-time {
-                font-size: 0.9rem;
-            }
-
-            .card-header h5 {
-                font-size: 1rem;
-            }
-
-            .table {
-                font-size: 0.875rem;
-            }
-
-            .table > :not(caption) > * > * {
-                padding: 0.75rem 0.5rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .card {
-                margin-bottom: 1rem;
-                border-radius: 0.75rem;
-            }
-
-            .card-header {
-                padding: 0.75rem 1rem;
-            }
-
-            .table {
-                font-size: 0.75rem;
-            }
-
-            .table > :not(caption) > * > * {
-                padding: 0.5rem 0.25rem;
-            }
-
-            .time-display {
-                padding: 0.35rem 0.75rem;
-            }
-        }
-
-        /* Loading Animation */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -281,7 +168,7 @@
         .loader {
             width: 48px;
             height: 48px;
-            border: 5px solid var(--primary-dark);
+            border: 4px solid #3b82f6;
             border-bottom-color: transparent;
             border-radius: 50%;
             animation: rotation 1s linear infinite;
@@ -290,6 +177,47 @@
         @keyframes rotation {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        .bg-primary { background: var(--primary-gradient) !important; }
+        .bg-secondary { background: var(--secondary-gradient) !important; }
+        .bg-success { background: var(--success-gradient) !important; }
+        .bg-info { background: var(--info-gradient) !important; }
+        .bg-warning { background: var(--warning-gradient) !important; }
+
+        /* Improved scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Add smooth slide-in animation for cards */
+        .card {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
